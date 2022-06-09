@@ -36,6 +36,13 @@ func GetAssetType(tokenType types.TokenType, address string, tokenQuantum *big.I
 		solsha3.Uint256(fmt.Sprint(quantum)),
 	)
 
+	if tokenType == types.ETH {
+		hash = solsha3.SoliditySHA3(
+			solsha3.Bytes4(assetInfo),
+			solsha3.Uint256(fmt.Sprint(quantum)),
+		)
+	}
+
 	assetType := new(big.Int)
 	assetType.SetString(hex.EncodeToString(hash), 16)
 	arg := new(big.Int)
