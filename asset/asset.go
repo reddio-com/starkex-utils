@@ -73,7 +73,7 @@ func GetAssetID(tokenType types.TokenType, address string, tokenQuantum *big.Int
 				"string",
 			},
 			[]interface{}{
-				"MINTABLE:", // TODO: support minting_blob
+				tokenId.String(), // TODO: support minting_blob
 			},
 		)), 16)
 		assetId.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
@@ -119,7 +119,7 @@ func GetAssetIDByAssetType(tokenType types.TokenType, assetType *big.Int, tokenI
 				"string",
 			},
 			[]interface{}{
-				"MINTABLE:", // TODO: support minting_blob
+				tokenId.String(), // TODO: support minting_blob
 			},
 		)), 16)
 		assetId.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
