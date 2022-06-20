@@ -73,7 +73,7 @@ func GetAssetID(tokenType types.TokenType, address string, tokenQuantum *big.Int
 				"string",
 			},
 			[]interface{}{
-				tokenId.String(), // TODO: support minting_blob
+				fmt.Sprintf("0x%x", tokenId), // TODO: support minting_blob
 			},
 		)), 16)
 		assetId.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
