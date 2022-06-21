@@ -143,6 +143,36 @@ func TestGetAssetID(t *testing.T) {
 			},
 			want: "34a3d452eec45ff2491610f4261bcd2aa0305730b1eeb9bec373ed679eedd47",
 		},
+		{
+			name: "test3",
+			args: args{
+				TokenType: types.ERC721M,
+				TokenId:   big.NewInt(2),
+				Address:   "0x490a36B174dfb726A33a8416eD2E489471923640",
+				Quantum:   big.NewInt(1),
+			},
+			want: "4001092dca3411adf0e2c242bfe94321deea57ffede4acef78af20c270a5348",
+		},
+		{
+			name: "test3",
+			args: args{
+				TokenType: types.ERC721M,
+				TokenId:   big.NewInt(67),
+				Address:   "0x490a36B174dfb726A33a8416eD2E489471923640",
+				Quantum:   big.NewInt(1),
+			},
+			want: "400aa6e72093b2960a575428b4627e64257d24a08b8a4e566790937e9e61d54",
+		},
+		{
+			name: "test3",
+			args: args{
+				TokenType: types.ERC721M,
+				TokenId:   big.NewInt(345738),
+				Address:   "0x490a36B174dfb726A33a8416eD2E489471923640",
+				Quantum:   big.NewInt(1),
+			},
+			want: "40051d57bde18dddb7e6e149ecc7f449d88af7b54f73990d3162c2992224248",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

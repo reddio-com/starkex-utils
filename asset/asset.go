@@ -9,6 +9,7 @@ import (
 	solsha3 "github.com/miguelmota/go-solidity-sha3"
 	"github.com/ngaut/log"
 	"github.com/reddio-com/starkex-utils/types"
+	"golang.org/x/crypto/sha3"
 )
 
 func GetAssetInfo(tokenType types.TokenType, address string) string {
@@ -66,16 +67,20 @@ func GetAssetID(tokenType types.TokenType, address string, tokenQuantum *big.Int
 		arg := new(big.Int)
 		arg.SetString("03FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", 16)
 		assetId = assetId.And(assetId, arg)
-	case types.ERC20M, types.ERC721M:
+	case types.ERC721M:
+		hash := sha3.NewLegacyKeccak256()
+
+		hexStr := fmt.Sprintf("%x", tokenId)
+		if (len(hexStr) % 2) != 0 {
+			hexStr = "0" + hexStr
+		}
+
+		hash.Write(decodeHex(hexStr))
+		blobHashHex := hash.Sum(nil)
+
 		blobHash := new(big.Int)
-		blobHash.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
-			[]string{
-				"string",
-			},
-			[]interface{}{
-				fmt.Sprintf("0x%x", tokenId), // TODO: support minting_blob
-			},
-		)), 16)
+		blobHash.SetString(hex.EncodeToString(blobHashHex), 16)
+
 		assetId.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
 			[]string{
 				"string",
@@ -147,4 +152,13 @@ func GetAssetIDByAssetType(tokenType types.TokenType, assetType *big.Int, tokenI
 func rightJust(s string, n int, fill string) string {
 	log.Debugf("rightJust: s: %s, n: %d, fill: %s", s, n, fill)
 	return strings.Repeat(fill, n-len(s)) + s
+}
+
+func decodeHex(s string) []byte {
+	b, err := hex.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return b
 }
