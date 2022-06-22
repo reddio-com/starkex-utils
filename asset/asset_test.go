@@ -42,14 +42,6 @@ func TestGetAssetInfo(t *testing.T) {
 			want: "0x025717920000000000000000000000004240e8b8c0b6E6464a13F555F6395BbfE1c4bdf1",
 		},
 		{
-			name: "ERC20M",
-			args: args{
-				TokenType: types.ERC20M,
-				Address:   "0x4240e8b8c0b6E6464a13F555F6395BbfE1c4bdf1",
-			},
-			want: "0x68646e2d0000000000000000000000004240e8b8c0b6E6464a13F555F6395BbfE1c4bdf1",
-		},
-		{
 			name: "ERC721M",
 			args: args{
 				TokenType: types.ERC721M,

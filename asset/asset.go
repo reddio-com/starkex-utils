@@ -23,8 +23,6 @@ func GetAssetInfo(tokenType types.TokenType, address string) string {
 		assetInfo = "0x02571792" + rightJust(address[2:], 64, "0")
 	case types.ERC721M:
 		assetInfo = "0xb8b86672" + rightJust(address[2:], 64, "0")
-	case types.ERC20M:
-		assetInfo = "0x68646e2d" + rightJust(address[2:], 64, "0")
 	}
 	return assetInfo
 }
@@ -117,16 +115,20 @@ func GetAssetIDByAssetType(tokenType types.TokenType, assetType *big.Int, tokenI
 		arg := new(big.Int)
 		arg.SetString("03FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", 16)
 		assetId = assetId.And(assetId, arg)
-	case types.ERC20M, types.ERC721M:
+	case types.ERC721M:
+		hash := sha3.NewLegacyKeccak256()
+
+		hexStr := fmt.Sprintf("%x", tokenId)
+		if (len(hexStr) % 2) != 0 {
+			hexStr = "0" + hexStr
+		}
+
+		hash.Write(decodeHex(hexStr))
+		blobHashHex := hash.Sum(nil)
+
 		blobHash := new(big.Int)
-		blobHash.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
-			[]string{
-				"string",
-			},
-			[]interface{}{
-				tokenId.String(), // TODO: support minting_blob
-			},
-		)), 16)
+		blobHash.SetString(hex.EncodeToString(blobHashHex), 16)
+
 		assetId.SetString(hex.EncodeToString(solsha3.SoliditySHA3(
 			[]string{
 				"string",
