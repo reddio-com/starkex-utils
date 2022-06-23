@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	solsha3 "github.com/miguelmota/go-solidity-sha3"
-	"github.com/ngaut/log"
 	"github.com/reddio-com/starkex-utils/types"
 	"golang.org/x/crypto/sha3"
 )
@@ -152,7 +151,6 @@ func GetAssetIDByAssetType(tokenType types.TokenType, assetType *big.Int, tokenI
 }
 
 func rightJust(s string, n int, fill string) string {
-	log.Debugf("rightJust: s: %s, n: %d, fill: %s", s, n, fill)
 	return strings.Repeat(fill, n-len(s)) + s
 }
 
